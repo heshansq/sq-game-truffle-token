@@ -120,4 +120,20 @@ contract PokemonTDToken {
         return token.balanceOf(_useraddress);
     }
 
+    function decimals() public view returns (uint8) {
+        return token.decimals();
+    }
+
+    function name() public view returns (string memory) {
+        return token.name();
+    }
+
+    function symbol() public view returns (string memory) {
+        return token.symbol();
+    }
+
+    function balanceOf() public returns(uint256 balance) {
+        return token.balanceOf(msg.sender);
+    }
+
 }

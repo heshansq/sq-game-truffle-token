@@ -8,9 +8,8 @@ contract BaseToken is Token {
     mapping(address => uint) balances;
     mapping(address => mapping(address => uint)) allowed;
     uint256 public totalSupplyVal;
-    string public name;
-    string public symbol;
-    uint8 public decimals;
+    string public _name;
+    string public _symbol;
     string public version = "1.0";
     address payable public fundsWallet;
     uint256 uintOfEthCanBuy;
@@ -22,8 +21,8 @@ contract BaseToken is Token {
         totalSupplyVal = 100 ether;
         fundsWallet = payable(msg.sender);
         balances[fundsWallet] = totalSupplyVal;
-        name = "PokemonTD";
-        symbol = "PKTD";
+        _name = "PokemonTD";
+        _symbol = "PKTD";
         uintOfEthCanBuy = 10000;
     }
 
@@ -85,7 +84,7 @@ contract BaseToken is Token {
         return true;
     }
 
-    function approveSpender(address _spender, address _owner, uint256 _value) public returns(bool success) {
+    function approveSpender(address _spender, address _owner, uint256 _value) public override returns(bool success) {
         allowed[_owner][_spender] = _value;
         emit Approval(_owner, _spender, _value);
         return true;
@@ -93,6 +92,38 @@ contract BaseToken is Token {
 
     function allowance(address _owner, address _spender) public override view returns(uint256 remaining){
         return allowed[_owner][_spender];
+    }
+
+    /**
+     * @dev Returns the number of decimals used to get its user representation.
+     * For example, if `decimals` equals `2`, a balance of `505` tokens should
+     * be displayed to a user as `5.05` (`505 / 10 ** 2`).
+     *
+     * Tokens usually opt for a value of 18, imitating the relationship between
+     * Ether and Wei. This is the default value returned by this function, unless
+     * it's overridden.
+     *
+     * NOTE: This information is only used for _display_ purposes: it in
+     * no way affects any of the arithmetic of the contract, including
+     * {IERC20-balanceOf} and {IERC20-transfer}.
+     */
+    function decimals() public view virtual override returns (uint8) {
+        return 18;
+    }
+
+    /**
+     * @dev Returns the name of the token.
+     */
+    function name() public view virtual override returns (string memory) {
+        return _name;
+    }
+
+    /**
+     * @dev Returns the symbol of the token, usually a shorter version of the
+     * name.
+     */
+    function symbol() public view virtual override returns (string memory) {
+        return _symbol;
     }
 
 }
